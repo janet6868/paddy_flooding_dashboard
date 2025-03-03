@@ -1,0 +1,13 @@
+#install the packages
+rasterio
+geopandas
+shapely
+pandas
+numpy
+matplotlib
+seaborn
+streamlit
+plotly
+contextily
+scipy
+statsmodels
