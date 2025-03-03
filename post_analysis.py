@@ -34,15 +34,111 @@ import statsmodels.api as sm
 from statsmodels.tsa.seasonal import seasonal_decompose
 import os
 import glob
+import matplotlib.pyplot as plt
+from datetime import datetime
+import os
+from rasterio.plot import show
+import matplotlib.pyplot as plt
+import geemap.colormaps as cm
+import ee
+import numpy as np
 import pandas as pd
+import geopandas as gpd
+import folium
+from datetime import datetime, date, timedelta
+from matplotlib.dates import DateFormatter, DayLocator
+from datetime import datetime
+from IPython.display import display
+import geemap
+from branca.colormap import LinearColormap
+import pandas as pd
+#import altair as alt
+import numpy as np
+import folium
+import geemap.foliumap as geema
+from geemap.basemaps import GoogleMapsTileProvider
+from tqdm import tqdm
+
+from up_sentinel2_flooding_detection import *
+
+#_____________________________---- 2025 with the code____________________
 # Use the full page instead of a narrow central column
 st.set_page_config(layout="wide")
 # Title of the Streamlit App
-st.title("Paddy Flooding Detection using Sentinel 2 Analysis (2019-2024)")
+st.title("Paddy Flooding Detection using Sentinel 2 Analysis (2025)")
+
+# app.py
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import folium
+# from streamlit_folium import st_folium
+import geemap.foliumap as geema
 from datetime import datetime
+
+# Import the function and references from sentinel2_flooding_detection.py
+from up_sentinel2_flooding_detection import (
+    run_detection_flooding,
+    dagana,  # geometry
+    grid     # FeatureCollection
+)
+
+
+def main():
+    st.title("Sentinel-2 Flooding Detection")
+
+    st.write(
+        """
+        This app uses Earth Engine data to detect flooded areas using Sentinel-2 MNDWI,
+        returning a DataFrame and optional plots of flood extent over time.
+        """
+    )
+
+    # Sidebar inputs
+    st.sidebar.subheader("Date Range and Year")
+    default_start = datetime(2025, 1, 21)
+    default_end = datetime(2025, 2, 23)
+    start_date = st.sidebar.date_input("Start Date", default_start)
+    end_date = st.sidebar.date_input("End Date", default_end)
+    year = st.sidebar.text_input("Year (YYYY)", "2025")
+
+    # Optional SAED CSV
+    local_saed_csv_path = "saed_2025.csv"
+    #st.sidebar.text_input("Optional SAED CSV path", "")
+    
+    # Button to run
+    if st.button("Run Flood Detection"):
+        with st.spinner("Processing..."):
+            df_final = run_detection_flooding(
+                aoi=dagana,
+                grid=grid,
+                start_date=start_date.strftime("%Y-%m-%d"),
+                end_date=end_date.strftime("%Y-%m-%d"),
+                year=year
+                #local_saed_csv_path=local_saed_csv_path if local_saed_csv_path else None
+            )
+
+        st.success("Flood detection completed!")
+        st.write("### Flooded Area Data (first 50 rows):")
+        st.dataframe(df_final.head(50))
+
+        # Display the basic timeseries
+        st.write("### Basic Timeseries Plot")
+        st.image("flooded_area_timeseries.png")
+
+        # Display combined SAED timeseries, if created
+        st.write("### Combined SAED Timeseries Plot")
+        st.image("flooded_area_combined.png")
+
+        # Display the final plot with planting period shading, if created
+        st.write("### Plot with Planting Period")
+        st.image("flooded_area_with_planting_period.png")
+
+
+if __name__ == "__main__":
+    main()
+
+st.title("Paddy Flooding Detection using Sentinel 2 Analysis (2019-2024)")
+
 
 # Constants
 START_PLANTING = 46  # 15 Feb
