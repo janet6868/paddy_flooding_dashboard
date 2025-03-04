@@ -1,4 +1,5 @@
 #install the packages
+pip install --upgrade pip
 setuptools
 rasterio
 rasterstats
