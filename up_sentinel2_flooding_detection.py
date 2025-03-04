@@ -2,7 +2,7 @@
 import ee
 import geemap
 from streamlit_folium import folium_static
-import geemap.foliumap as geemap
+import geemap.foliumap as geema
 import pandas as pd
 from datetime import datetime, timedelta
 from tqdm import tqdm
