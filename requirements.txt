@@ -18,3 +18,4 @@ contextily
 scipy
 statsmodels
 pkg_resources
+--upgrade pip
