@@ -36,6 +36,10 @@ import re
 # You must have already authenticated Earth Engine once in your environment:
 #   earthengine authenticate
 # Alternatively, uncomment if you want an interactive prompt:
+from google.auth import compute_engine
+import ee
+credentials = compute_engine.Credentials(scopes=['https://www.googleapis.com/auth/earthengine'])
+ee.Initialize(credentials)
 ee.Authenticate()
 ee.Initialize(project='ee-janet')
 #ee.Authenticate()
@@ -237,16 +241,16 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
 
                 # End-of-month check
                 is_end_of_month = (i == len(date_ranges) - 1) or (next_month != current_month)
-                if is_end_of_month:
-                    # Add to geemap (optional)
-                    m.addLayer(
-                        cumulative_flood_mask.updateMask(cumulative_flood_mask.gt(0)),
-                        flood_vis_params,
-                        f'Flooding up to {date}'
-                    )
-                    # Reset for next
-                    if next_month is not None:
-                        current_month = next_month
+                # if is_end_of_month:
+                #     # Add to geemap (optional)
+                #     m.addLayer(
+                #         cumulative_flood_mask.updateMask(cumulative_flood_mask.gt(0)),
+                #         flood_vis_params,
+                #         f'Flooding up to {date}'
+                #     )
+                #     # Reset for next
+                #     if next_month is not None:
+                #         current_month = next_month
             else:
                 print(f"Skipping date {date}, no valid MNDWI found.")
 
