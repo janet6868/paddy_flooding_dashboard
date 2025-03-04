@@ -10,6 +10,9 @@ numpy
 matplotlib
 seaborn
 streamlit
+streamlit-folium
+geemap
+leafmap
 plotly
 contextily
 scipy

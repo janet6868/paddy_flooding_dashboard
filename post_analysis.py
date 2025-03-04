@@ -81,62 +81,6 @@ from up_sentinel2_flooding_detection import (
     dagana,  # geometry
     grid     # FeatureCollection
 )
-
-
-def main():
-    st.title("Sentinel-2 Flooding Detection")
-
-    st.write(
-        """
-        This app uses Earth Engine data to detect flooded areas using Sentinel-2 MNDWI,
-        returning a DataFrame and optional plots of flood extent over time.
-        """
-    )
-
-    # Sidebar inputs
-    st.sidebar.subheader("Date Range and Year")
-    default_start = datetime(2025, 1, 21)
-    default_end = datetime(2025, 2, 23)
-    start_date = st.sidebar.date_input("Start Date", default_start)
-    end_date = st.sidebar.date_input("End Date", default_end)
-    year = st.sidebar.text_input("Year (YYYY)", "2025")
-
-    # Optional SAED CSV
-    local_saed_csv_path = "saed_2025.csv"
-    #st.sidebar.text_input("Optional SAED CSV path", "")
-    
-    # Button to run
-    if st.button("Run Flood Detection"):
-        with st.spinner("Processing..."):
-            df_final = run_detection_flooding(
-                aoi=dagana,
-                grid=grid,
-                start_date=start_date.strftime("%Y-%m-%d"),
-                end_date=end_date.strftime("%Y-%m-%d"),
-                year=year
-                #local_saed_csv_path=local_saed_csv_path if local_saed_csv_path else None
-            )
-
-        st.success("Flood detection completed!")
-        st.write("### Flooded Area Data (first 50 rows):")
-        st.dataframe(df_final.head(50))
-
-        # Display the basic timeseries
-        st.write("### Basic Timeseries Plot")
-        st.image("flooded_area_timeseries.png")
-
-        # Display combined SAED timeseries, if created
-        st.write("### Combined SAED Timeseries Plot")
-        st.image("flooded_area_combined.png")
-
-        # Display the final plot with planting period shading, if created
-        st.write("### Plot with Planting Period")
-        st.image("flooded_area_with_planting_period.png")
-
-
-if __name__ == "__main__":
-    main()
-
 st.title("Paddy Flooding Detection using Sentinel 2 Analysis (2019-2024)")
 
 

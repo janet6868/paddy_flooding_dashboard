@@ -1,6 +1,8 @@
 # sentinel2_flooding_detection.py
 import ee
 import geemap
+from streamlit_folium import folium_static
+import geemap.foliumap as geemap
 import pandas as pd
 from datetime import datetime, timedelta
 from tqdm import tqdm
@@ -293,86 +295,93 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
     df_final.to_csv(output_file_name, index=False)
 
     print(f"Saved {output_file_name} locally.")
-    print(df_final.head(20))
-    print(df_final.dtypes)
+     # *** The line that displays your geemap map: ***
 
-    # # --------------------------------------------------------------
-    # # 4. PLOT RESULTS
-    # # --------------------------------------------------------------
-    rs_hueristics_dff_2025 = df_final.filter(regex=('\\d{4}-?\\d{2}-?\\d{2}$'))
-    area_rs_25 = rs_hueristics_dff_2025.sum(axis=0)
-    rs_df_25 = pd.DataFrame()
-    rs_df_25['Date'] = list(area_rs_25.index)
-    rs_df_25['Area(ha)'] = list(area_rs_25.values)
-    rs_df_25['Data_source'] = 'Remote sensing 2025'
-    rs_df_25['date'] = pd.to_datetime(rs_df_25['Date'])
+    folium_static(m)
+    #print(df_final.head(20))
+    #print(df_final.dtypes)
 
-    local_saed_csv_path = r"D:\s2_publishing\paddy_flooding_dashboard\saed_2025.csv"
-    saed_2025_dhs = pd.read_csv(local_saed_csv_path)
-    saed_2025_dhs['date'] = pd.to_datetime(saed_2025_dhs['Date'])
+    # # # --------------------------------------------------------------
+    # # # 4. PLOT RESULTS
+    # # # --------------------------------------------------------------
+    # rs_df = pd.read_csv(output_file_name)
+    # rs_hueristics_dff_2025 = rs_df.filter(regex=('\\d{4}-?\\d{2}-?\\d{2}$'))
+    # #print(rs_hueristics_dff_2025)
+    # area_rs_25 = rs_hueristics_dff_2025.sum(axis=0)
+    # #print(area_rs_25)
+    # rs_df_25 = pd.DataFrame()
+    # rs_df_25['Date'] = list(area_rs_25.index)
+    # rs_df_25['Area(ha)'] = list(area_rs_25.values)
+    # rs_df_25['Data_source'] = 'Remote sensing 2025'
+    # rs_df_25['date'] = pd.to_datetime(rs_df_25['Date'])
+    # #print(rs_df_25)
+    # local_saed_csv_path = r"D:\s2_publishing\paddy_flooding_dashboard\saed_2025.csv"
+    # saed_2025_dhs = pd.read_csv(local_saed_csv_path)
+    # saed_2025_dhs['date'] = pd.to_datetime(saed_2025_dhs['Date'])
 
 
-    # Combine dataframes for 2025
-    combined_df_2025 = pd.concat([rs_df_25, saed_2025_dhs])
-    combined_df_2025['Day'] = combined_df_2025['date'].dt.day
-    combined_df_2025['Month'] = combined_df_2025['date'].dt.month
-    combined_df_2025['Year'] = combined_df_2025['date'].dt.year
-    combined_df_2025['Days'] = combined_df_2025['date'].dt.dayofyear
+    # # Combine dataframes for 2025
+    # combined_df_2025 = pd.concat([rs_df_25, saed_2025_dhs])
+    # combined_df_2025['Day'] = combined_df_2025['date'].dt.day
+    # combined_df_2025['Month'] = combined_df_2025['date'].dt.month
+    # combined_df_2025['Year'] = combined_df_2025['date'].dt.year
+    # combined_df_2025['Days'] = combined_df_2025['date'].dt.dayofyear
+    # #print(combined_df_2025)
 
-    # Define a consistent color palette for all data sources
-    palette = {
-        'Remote sensing 2025': 'blue',
-        'SAED prepared area': 'purple',
-        'SAED planted area': 'orange'
-    }
+    # # Define a consistent color palette for all data sources
+    # palette = {
+    #     'Remote sensing 2025': 'blue',
+    #     'SAED prepared area': 'purple',
+    #     'SAED planted area': 'orange'
+    # }
     
-    # Set the figure size factor
-    scale_factor = 18/2
+    # # Set the figure size factor
+    # scale_factor = 18/2
 
-    # Set the figure parameters
-    plt.rcParams['figure.figsize'] = (scale_factor, scale_factor * 0.6)  # maintains aspect ratio
+    # # Set the figure parameters
+    # plt.rcParams['figure.figsize'] = (scale_factor, scale_factor * 0.6)  # maintains aspect ratio
 
-    # Define the start and end dates for vertical lines
-    start_date = datetime.strptime('2025-02-15', '%Y-%m-%d')
-    end_date = datetime.strptime('2025-03-15', '%Y-%m-%d')
+    # # Define the start and end dates for vertical lines
+    # start_date = datetime.strptime('2025-02-15', '%Y-%m-%d')
+    # end_date = datetime.strptime('2025-03-15', '%Y-%m-%d')
 
-    # Create single plot
-    # plt.figure(figsize=(10, 6))  # Remove this as we're using rcParams
+    # # Create single plot
+    # # plt.figure(figsize=(10, 6))  # Remove this as we're using rcParams
 
-    # Plot the data
-    sns.lineplot(data=combined_df_2025, x='date', y='Area(ha)', hue='Data_source', marker='o', palette=palette)
-    plt.title('2025 Dry Hot Season Flooded Areas (ha)')
-    plt.xlabel('Day of the year')
-    plt.ylabel('Area (ha)')
+    # # Plot the data
+    # sns.lineplot(data=combined_df_2025, x='date', y='Area(ha)', hue='Data_source', marker='o', palette=palette)
+    # plt.title('2025 Dry Hot Season Flooded Areas (ha)')
+    # plt.xlabel('Day of the year')
+    # plt.ylabel('Area (ha)')
 
-    # Add shaded area between start and end dates
-    plt.axvspan(start_date, end_date, color='grey', alpha=0.3, label='Planting period')
+    # # Add shaded area between start and end dates
+    # plt.axvspan(start_date, end_date, color='grey', alpha=0.3, label='Planting period')
 
-    # Add vertical lines
-    plt.axvline(start_date, color='black', linestyle='--')
-    plt.axvline(end_date, color='black', linestyle='--')
+    # # Add vertical lines
+    # plt.axvline(start_date, color='black', linestyle='--')
+    # plt.axvline(end_date, color='black', linestyle='--')
 
-    # Calculate the middle point for the text
-    middle_date = start_date + (end_date - start_date)/2
-    # Add label in the middle of the shaded area
-    plt.text(middle_date, 7000, 'Planting period\n(15 FEB - 15 MAR)',
-            ha='center', va='center', color='black',
-            bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
+    # # Calculate the middle point for the text
+    # middle_date = start_date + (end_date - start_date)/2
+    # # Add label in the middle of the shaded area
+    # plt.text(middle_date, 7000, 'Planting period\n(15 FEB - 15 MAR)',
+    #         ha='center', va='center', color='black',
+    #         bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
 
-    # Adjust legend
-    plt.legend(title='Data Source', bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.grid(True)
+    # # Adjust legend
+    # plt.legend(title='Data Source', bbox_to_anchor=(1.05, 1), loc='upper left')
+    # plt.grid(True)
 
-    # Rotate x-axis labels
-    plt.xticks(rotation=45, ha='right')
+    # # Rotate x-axis labels
+    # plt.xticks(rotation=45, ha='right')
 
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
 
-    # Reset rcParams to default if needed
-    plt.rcParams['figure.figsize'] = plt.rcParamsDefault['figure.figsize']
-    plt.savefig('flooded_area_20252.png', dpi=300, bbox_inches='tight')
-    plt.savefig('flooded_area_2025.png')
+    # # Reset rcParams to default if needed
+    # plt.rcParams['figure.figsize'] = plt.rcParamsDefault['figure.figsize']
+    # #plt.savefig('flooded_area_20252.png', dpi=300, bbox_inches='tight')
+    # #plt.savefig('flooded_area_2025.png')
     
-    # Return the final DataFrame
+    # # Return the final DataFrame
     return df_final
