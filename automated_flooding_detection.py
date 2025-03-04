@@ -21,7 +21,7 @@ import geopandas as gpd
 import contextily as ctx
 import folium
 from folium.plugins import MarkerCluster, HeatMap
-import geemap
+#import geemap
 import ee
 import shapely.geometry
 import warnings
