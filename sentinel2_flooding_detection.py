@@ -27,7 +27,7 @@ from shapely.geometry import Point, LineString, Polygon, box
 from matplotlib.dates import DateFormatter, DayLocator
 from matplotlib.colors import ListedColormap, BoundaryNorm
 from rasterio.plot import show
-from IPython.display import display, Markdown, HTML
+#from IPython.display import display, Markdown, HTML
 from folium.plugins import MarkerCluster
 from shapely.wkt import loads
 from matplotlib.patches import Patch
