@@ -26,6 +26,13 @@ from folium.plugins import MarkerCluster, HeatMap
 import geemap
 import ee
 import shapely.geometry
+import warnings
+try:
+    from IPython.core.display import display
+except ImportError:
+    warnings.warn("IPython is not available. Some geemap functionality may be limited.")
+import geemap
+
 
 # Import your custom module - adjust as needed
 # try:
