@@ -1,4 +1,5 @@
 #install the packages
+--upgrade setuptools
 rasterio
 rasterstats
 fiona
