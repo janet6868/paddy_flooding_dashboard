@@ -66,8 +66,8 @@ center_lat = (roi_bounds[0][1] + roi_bounds[2][1]) / 2
 center_lon = (roi_bounds[0][0] + roi_bounds[2][0]) / 2
 
 # Create a p.Map instance (only needed if you plan to export or visualize)
-m = folium.Map(locaton=[center_lat, center_lon], zoom=10)
-m.add_basemap('Esri.WorldImagery')
+m = folium.Map(locaton=[center_lat, center_lon], zoom_start=10)
+#m.add_basemap('Esri.WorldImagery')
 
 
 def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv_path=None):
