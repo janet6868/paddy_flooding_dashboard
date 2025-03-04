@@ -1,6 +1,4 @@
-
-# ______________ CODE 2____________
-# # Import core libraries
+# Import core libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -27,11 +25,11 @@ import geemap
 import ee
 import shapely.geometry
 import warnings
-try:
-    from IPython.core.display import display
-except ImportError:
-    warnings.warn("IPython is not available. Some geemap functionality may be limited.")
-import geemap
+# try:
+#     from IPython.core.display import display
+# except ImportError:
+#     warnings.warn("IPython is not available. Some geemap functionality may be limited.")
+# import geemap
 
 
 # Import your custom module - adjust as needed
