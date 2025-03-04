@@ -36,8 +36,9 @@ import re
 # You must have already authenticated Earth Engine once in your environment:
 #   earthengine authenticate
 # Alternatively, uncomment if you want an interactive prompt:
-# ee.Authenticate()
+ee.Authenticate()
 ee.Initialize(project='ee-janet')
+#ee.Authenticate()
 
 # ------------------------------------------------------------------
 # 2. DEFINE YOUR REGIONS, COLLECTIONS, ETC.
