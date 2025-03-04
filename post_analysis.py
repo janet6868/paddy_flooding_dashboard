@@ -48,7 +48,7 @@ import folium
 from datetime import datetime, date, timedelta
 from matplotlib.dates import DateFormatter, DayLocator
 from datetime import datetime
-from IPython.display import display
+#from IPython.display import display
 import geemap
 from branca.colormap import LinearColormap
 import pandas as pd
