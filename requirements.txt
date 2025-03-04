@@ -1,5 +1,4 @@
 #install the packages
-pip install --upgrade pip
 setuptools
 rasterio
 rasterstats
@@ -19,5 +18,4 @@ plotly
 contextily
 scipy
 statsmodels
-pkg_resources
-pip
+#pkg_resources
