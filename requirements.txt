@@ -1,5 +1,5 @@
 #install the packages
---upgrade setuptools
+setuptools
 rasterio
 rasterstats
 fiona
@@ -19,4 +19,4 @@ contextily
 scipy
 statsmodels
 pkg_resources
---upgrade pip
+pip
