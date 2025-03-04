@@ -239,7 +239,7 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
                 is_end_of_month = (i == len(date_ranges) - 1) or (next_month != current_month)
                 if is_end_of_month:
                     # Add to geemap (optional)
-                    m.add_layer(
+                    m.addLayer(
                         cumulative_flood_mask.updateMask(cumulative_flood_mask.gt(0)),
                         flood_vis_params,
                         f'Flooding up to {date}'
