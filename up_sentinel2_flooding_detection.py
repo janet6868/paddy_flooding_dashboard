@@ -3,7 +3,7 @@ import ee
 #import geemap
 from streamlit_folium import folium_static
 from streamlit_folium import st_folium
-import geemap.foliumap as geema
+#import geemap.foliumap as geema
 import pandas as pd
 from datetime import datetime, timedelta
 from tqdm import tqdm
@@ -65,7 +65,7 @@ roi_bounds = dagana.bounds().getInfo()['coordinates'][0]
 center_lat = (roi_bounds[0][1] + roi_bounds[2][1]) / 2
 center_lon = (roi_bounds[0][0] + roi_bounds[2][0]) / 2
 
-# Create a geemap.Map instance (only needed if you plan to export or visualize)
+# Create a p.Map instance (only needed if you plan to export or visualize)
 m = folium.Map(locaton=[center_lat, center_lon], zoom=10)
 m.add_basemap('Esri.WorldImagery')
 
