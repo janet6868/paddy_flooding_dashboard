@@ -48,7 +48,7 @@ st.write("project_id:", st.secrets["project"])
 # st.write("DB password:", st.secrets["db_password"])
 # st.write("My cool secrets:", st.secrets["my_cool_secrets"]["things_i_like"])
 ee.Authenticate()
-ee.Initialize(project=rpject_id)
+ee.Initialize(project=project_id)
 # ------------------------------------------------------------------
 # 2. DEFINE YOUR REGIONS, COLLECTIONS, ETC.
 # ------------------------------------------------------------------
