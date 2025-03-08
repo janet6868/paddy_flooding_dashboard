@@ -1,10 +1,6 @@
 # sentinel2_flooding_detection.py
 import ee
-import streamlit as st
-#import geemap
 from streamlit_folium import folium_static
-from streamlit_folium import st_folium
-#import geemap.foliumap as geema
 import geemap.ee_tile_layers as geemap
 import pandas as pd
 from datetime import datetime, timedelta
@@ -33,18 +29,14 @@ import json
 import re
 
 # ------------------------------------------------------------------
-# 1. EARTH ENGINE AUTHENTICATION (LOCAL)
+# 1. EARTH ENGINE AUTHENTICATION
 # ------------------------------------------------------------------
-# You must have already authenticated Earth Engine once in your environment:
-#   earthengine authenticate
-# Alternatively, uncomment if you want an interactive prompt:
-from google.auth import compute_engine
-import ee
-# credentials = compute_engine.Credentials(scopes=['https://www.googleapis.com/auth/earthengine'])
-# ee.Initialize(credentials)
-ee.Authenticate()
-ee.Initialize(project='ee-janet')
-#ee.Authenticate()
+# Authenticate and initialize Earth Engine
+try:
+    ee.Initialize()
+except Exception:
+    ee.Authenticate()
+    ee.Initialize(project='ee-janet')
 
 # ------------------------------------------------------------------
 # 2. DEFINE YOUR REGIONS, COLLECTIONS, ETC.
@@ -67,19 +59,11 @@ exclusion_areas = (
 
 dagana = init_dagana.geometry().difference(exclusion_areas)
 
-# (Optional) For bounding info, if needed
+# Get bounds for map centering
 roi_bounds = dagana.bounds().getInfo()['coordinates'][0]
-water_bounds = grid.bounds().getInfo()#['coordinates'][0]
 center_lat = (roi_bounds[0][1] + roi_bounds[2][1]) / 2
 center_lon = (roi_bounds[0][0] + roi_bounds[2][0]) / 2
-m = folium.Map(location=[16.51277780,-15.80500000], zoom_start=10)
-#m.save("folium_map.html")
 
-# Add a title on the map
-title_html = '''
-             <h3 align="center" style="font-size:20px"><b>Spatial Map for Flooded Areas</b></h3>
-             '''
-m.get_root().html.add_child(folium.Element(title_html))
 def add_ee_layer(map_object, ee_image_object, vis_params, name):
     """Add an Earth Engine image as a tile layer to a Folium map."""
     map_id_dict = ee.Image(ee_image_object).getMapId(vis_params)
@@ -90,14 +74,12 @@ def add_ee_layer(map_object, ee_image_object, vis_params, name):
         name=name,
         overlay=True,
         control=True,
-        max_zoom=15 
     ).add_to(map_object)
 
 def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv_path=None):
     """
     Processes Sentinel-2 data for flood detection using MNDWI and 
-    returns a Pandas DataFrame with the results. Optionally merges with 
-    a local SAED CSV file (if path is provided).
+    returns a Pandas DataFrame with the results and a Folium map.
 
     Args:
         aoi (ee.Geometry): Region of interest (Dagana).
@@ -108,6 +90,7 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
         local_saed_csv_path (str, optional): Path to local SAED CSV file.
     Returns:
         pd.DataFrame: DataFrame of flood data and optional SAED data.
+        folium.Map: Folium map with flood visualization.
     """
 
     # --------------------------------------------------------------
@@ -209,6 +192,15 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
     def process_and_visualize_flooding(aoi, date_ranges, grid_fc):
         """Iterate over date ranges, build a cumulative mask, gather data."""
         flood_data = []
+        
+        # Initialize a Folium map correctly with proper location parameter
+        m = folium.Map(location=[center_lat, center_lon], zoom_start=9)
+        
+        # Add basemap layers
+        folium.TileLayer('CartoDB positron', name='Light Map').add_to(m)
+        folium.TileLayer('CartoDB dark_matter', name='Dark Map').add_to(m)
+        folium.TileLayer('OpenStreetMap', name='OpenStreetMap').add_to(m)
+        
         # Prepare an empty 'base' image in the same projection
         first_image = (
             ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
@@ -216,6 +208,7 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
             .first()
         )
         projection = first_image.select('B2').projection()
+        
         # Start with a zero-value image
         cumulative_flood_mask = ee.Image(0).reproject(crs=projection, scale=10).clip(aoi)
 
@@ -237,6 +230,7 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
                     current_mndwi.And(cumulative_flood_mask.eq(0)),
                     doy
                 )
+                
                 # Summaries for each grid cell
                 grid_with_flood_area = calculate_grid_flood_area(
                     cumulative_flood_mask.gt(0),
@@ -257,19 +251,37 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
                 else:
                     next_month = None
 
-                # End-of-month check
+                # End-of-month check or last date
                 is_end_of_month = (i == len(date_ranges) - 1) or (next_month != current_month)
-                if is_end_of_month:
+                
+                if is_end_of_month or i == len(date_ranges) - 1:
                     # Create a mask where flood has been detected
                     flood_mask_visual = cumulative_flood_mask.updateMask(cumulative_flood_mask.gt(0))
                     # Add the layer to the Folium map using our helper function
                     add_ee_layer(m, flood_mask_visual, flood_vis_params, f'Flooding up to {date}')
+                    
                 if next_month is not None:
                     current_month = next_month
-   
             else:
                 print(f"Skipping date {date}, no valid MNDWI found.")
 
+        # Add feature collections to the map
+        grid_style = {'color': '#999999', 'fillColor': '#00000000', 'weight': 0.5}
+        dagana_style = {'color': 'red', 'fillColor': '#00000000', 'weight': 1.5}
+        
+        folium.GeoJson(
+            data=grid.getInfo(),
+            name='Grid Cells',
+            style_function=lambda x: grid_style
+        ).add_to(m)
+        
+        folium.GeoJson(
+            data=init_dagana.getInfo(),
+            name='Dagana Area',
+            style_function=lambda x: dagana_style
+        ).add_to(m)
+        
+        # Add a colorbar
         colormap = LinearColormap(
             colors=flood_vis_params['palette'],
             vmin=flood_vis_params['min'],
@@ -277,13 +289,17 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
             caption="Day of the year"
         )
         colormap.add_to(m)
-        return flood_data
+        
+        # Add layer control
+        folium.LayerControl().add_to(m)
+        
+        return flood_data, m
 
     # --------------------------------------------------------------
     # 3. RUN FLOOD DETECTION LOGIC
     # --------------------------------------------------------------
     date_ranges = enhanced_date_processing(start_date, end_date)
-    flood_data = process_and_visualize_flooding(aoi, date_ranges, grid)
+    flood_data, m = process_and_visualize_flooding(aoi, date_ranges, grid)
 
     df = create_flood_dataframe(flood_data)
     df = df.reset_index()
@@ -295,7 +311,7 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
 
     # Identify the date with maximum flood area per grid
     max_date = df_pivoted.idxmax(axis=1)
-    df_pivoted['Est_flooding_date'] = max_date
+    df_pivoted['flooding_date'] = max_date
 
     # Optional columns to keep if your grid has them
     columns_to_keep = ['ID','LatNP','Latitude','LonNP','Longitude','nasapid']
@@ -312,11 +328,11 @@ def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv
 
     # Reorder columns if needed
     date_columns = [col for col in df_final.columns if re.match(r'\d{4}-\d{2}-\d{2}', str(col))]
-    df_final = df_final[['grid_id'] + columns_to_keep + date_columns + ['Est_flooding_date']]
+    df_final = df_final[['grid_id'] + columns_to_keep + date_columns + ['flooding_date']]
 
     output_file_name = f'floodingData_{year}.csv'
     df_final.to_csv(output_file_name, index=False)
 
     print(f"Saved {output_file_name} locally.")
-
+    
     return df_final, m
