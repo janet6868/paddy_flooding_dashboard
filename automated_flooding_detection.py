@@ -514,13 +514,20 @@ with tab_history:
         st.warning("Work in progress – you will be able to rerun fresh flooding areas and maps for each year.")
     
     elif view_type == "Show history":
-        st.subheader("1) Cumulative Flooded-Area Curve (2019–2025)")
+        #st.subheader("1) Cumulative Flooded-Area Curve (2019–2025)")
 
         selected_years = st.multiselect(
             "Select years for cumulative curve (including 2025 local data):",
             [2019, 2020, 2021, 2022, 2023, 2024, 2025],
-            default=[2019, 2020, 2021, 2022, 2023, 2024, 2025]
+            default=[2023, 2024, 2025]
         )
+        if selected_years:
+            min_year = min(selected_years)
+            max_year = max(selected_years)
+            year_range = f"{min_year}–{max_year}"
+        else:
+            year_range = "No years selected"
+        st.subheader("1) Cumulative Flooded-Area Curve (2019–2025)")
 
         # Clear any existing figures
         plt.close('all')
@@ -604,7 +611,7 @@ with tab_history:
         map_years = st.multiselect(
             "Select up to two years for TIF-based maps (2019–2024):",
             [ 2023, 2024],#2019, 2020, 2021, 2022,
-            default=[2023]
+            default=[]
         )
         if len(map_years) > 2:
             st.warning("Please select up to 2 years only. Using the first two selected.")
@@ -1129,13 +1136,19 @@ st.markdown("""
 #         st.warning("Work in progress – you will be able to rerun fresh flooding areas and maps for each year.")
     
 #     elif view_type == "Show history":
-#         st.subheader("1) Cumulative Flooded-Area Curve (2019–2025)")
-
+#     
 #         selected_years = st.multiselect(
 #             "Select years for cumulative curve (including 2025 local data):",
 #             [2019, 2020, 2021, 2022, 2023, 2024, 2025],
 #             default=[2019, 2020, 2021, 2022, 2023, 2024, 2025]
 #         )
+         #  if selected_years:
+         #    min_year = min(selected_years)
+         #    max_year = max(selected_years)
+         #    year_range = f"{min_year}–{max_year}"
+         #  else:
+         #    year_range = "No years selected"
+         # st.subheader("1) Cumulative Flooded-Area Curve (2019–2025)")
 
 #         all_dataframes = []
 #         for yr in selected_years:
