@@ -559,8 +559,8 @@ with tab_history:
                 map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.tif"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
-                boundary_path ="maps/agcelerant_plots.geojson"
-                map_path = f"maps/flooding_map_agcelerant_{y}.tif"
+                boundary_path ="https://github.com/janet6868/paddy_flooding_dashboard/blob/main/agcelerant_plots.geojson"
+                map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_agcelerant_{y}.tif"
                 map_title = f"{season_choice} agCelerant Flooding Map {y}"
 
             fig_map = create_flooding_map_plot(map_path, boundary_path, map_title)
