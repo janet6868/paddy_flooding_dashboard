@@ -118,7 +118,7 @@ def create_flooding_map_plot(map_path: str, boundary_path: str, title: str):
     so we can display via st.pyplot.
     """
     raw_url_map = map_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
-    raw_url_geojson = boundary_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/"
+    raw_url_geojson = boundary_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
     try:
         with rio.open(raw_url_map) as src:
             mp = src.read(1)
