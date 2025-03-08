@@ -53,9 +53,9 @@ def load_remote_flood_data(year: int, region: str) -> pd.DataFrame:
     """
     # Adjust logic for your actual GitHub paths
     if region == "Entire Dagana Region":
-        url = f"https://github.com/ICRISAT-Senegal/Remote-sensing/blob/main/flooding_data_{year}.csv"
+        url = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_data_{year}.csv"
     else:
-        url = f"https://github.com/ICRISAT-Senegal/Remote-sensing/blob/main/combined_flooding_data_{year}.csv"
+        url = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/combined_flooding_data_{year}.csv"
 
     raw_url = url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
     df_temp = pd.read_csv(raw_url).drop(columns=["flooding_date"], errors="ignore")
@@ -564,8 +564,8 @@ with tab_history:
         
         for y in map_years:
             if area_choice == "Entire Dagana Region":
-                boundary_path = "D:/s2_publishing/paddy_flooding_dashboard/maps/dagana_region.geojson"
-                map_path = f"D:/s2_publishing/paddy_flooding_dashboard/maps/flooding_map_Dagana{y}.tif"
+                boundary_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/maps/dagana_region.geojson"
+                map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/maps/flooding_map_Dagana{y}.tif"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
                 boundary_path ="maps/agcelerant_plots.geojson"
