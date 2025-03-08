@@ -636,6 +636,17 @@ from sentinel2_flooding_detection import (
     dagana,  # geometry for entire Dagana region
     grid     # FeatureCollection
 )
+#####################################################
+# PAGE CONFIG & MAIN LAYOUT
+#####################################################
+st.set_page_config(
+    page_title="Paddy Flooding Monitoring",
+    page_icon="🌾",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+st.markdown("<h1 class='main-header'>Paddy Flooding Monitoring </h1>", 
+            unsafe_allow_html=True)
 
 
 # Hard-coded planting & harvesting DOYs, plus TIF colormap
@@ -782,17 +793,6 @@ def create_flooding_map_plot(map_path: str, boundary_path: str, title: str):
         st.error(f"Error processing map '{map_path}': {e}")
         return None
 
-#####################################################
-# 3) PAGE CONFIG & MAIN LAYOUT
-#####################################################
-st.set_page_config(
-    page_title="Paddy Flooding Monitoring",
-    page_icon="🌾",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-st.markdown("<h1 class='main-header'>Paddy Flooding Monitoring </h1>", 
-            unsafe_allow_html=True)
 
 #####################################################
 # Initialize session state variables
