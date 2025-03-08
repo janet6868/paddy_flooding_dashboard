@@ -27,15 +27,6 @@ from up_sentinel2_flooding_detection import (
     grid     # FeatureCollection
 )
 
-#####################################################
-# 1) CONFIG & CONSTANTS (No st.secrets)
-#####################################################
-# Hard-coded config dictionary with local paths:
-# CONFIG = {
-#     "maps_folder": "D:/s2_publishing/paddy_flooding_dashboard/maps",
-#     "dagana_geojson": "D:s2_publishing/paddy_flooding_dashboard/maps/dagana_region.geojson",
-#     "agcelerant_geojson": "D/s2_publishing/paddy_flooding_dashboard/maps/agcelerant_plots.geojson",
-# }
 
 # Hard-coded planting & harvesting DOYs, plus TIF colormap
 PLANTING_DOY = (46, 74)   # 15 Feb (46) - 15 Mar (74)
@@ -191,7 +182,7 @@ st.markdown("<h1 class='main-header'>Paddy Flooding Monitoring </h1>",
 
 # =============== SIDEBAR ===============
 with st.sidebar:
-    st.image("logo.png", width=150)
+    st.image("logo.png", width=200)
 
     st.markdown("## Choose Season")
     season_choice = st.selectbox(
@@ -564,8 +555,8 @@ with tab_history:
         
         for y in map_years:
             if area_choice == "Entire Dagana Region":
-                boundary_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/maps/dagana_region.geojson"
-                map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/maps/flooding_map_Dagana{y}.tif"
+                boundary_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/dagana_region.geojson"
+                map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.tif"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
                 boundary_path ="maps/agcelerant_plots.geojson"
