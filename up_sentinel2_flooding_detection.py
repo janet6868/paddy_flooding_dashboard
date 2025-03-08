@@ -38,14 +38,17 @@ import re
 # You must have already authenticated Earth Engine once in your environment:
 #   earthengine authenticate
 # Alternatively, uncomment if you want an interactive prompt:
-from google.auth import compute_engine
-import ee
+# from google.auth import compute_engine
+# import ee
 # credentials = compute_engine.Credentials(scopes=['https://www.googleapis.com/auth/earthengine'])
 # ee.Initialize(credentials)
-ee.Authenticate()
-ee.Initialize(project='ee-janet')
-#ee.Authenticate()
 
+#ee.Authenticate()
+st.write("project_id:", st.secrets["project"])
+# st.write("DB password:", st.secrets["db_password"])
+# st.write("My cool secrets:", st.secrets["my_cool_secrets"]["things_i_like"])
+ee.Authenticate()
+ee.Initialize(project=rpject_id)
 # ------------------------------------------------------------------
 # 2. DEFINE YOUR REGIONS, COLLECTIONS, ETC.
 # ------------------------------------------------------------------
