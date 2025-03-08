@@ -1,4 +1,6 @@
 #install the packages
+gcloud
+google.cloud
 setuptools
 rasterio
 rasterstats
