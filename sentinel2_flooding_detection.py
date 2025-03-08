@@ -115,8 +115,7 @@ roi_bounds = dagana.bounds().getInfo()['coordinates'][0]
 water_bounds = grid.bounds().getInfo()#['coordinates'][0]
 center_lat = (roi_bounds[0][1] + roi_bounds[2][1]) / 2
 center_lon = (roi_bounds[0][0] + roi_bounds[2][0]) / 2
-m = folium.Map(location=[16.51277780,-15.80500000], zoom_start=10)
-#m.save("folium_map.html")
+m = folium.Map(location=[16.51277780,-15.80500000], zoom_start=8)
 
 # Add a title on the map
 title_html = '''
