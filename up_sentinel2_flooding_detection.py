@@ -34,6 +34,46 @@ import re
 
 # ------------------------------------------------------------------
 # 1. EARTH ENGINE AUTHENTICATION (LOCAL)
+import streamlit as st
+import ee
+
+def initialize_ee_from_service_account():
+    """
+    Initialize Earth Engine using service account creds from st.secrets.
+    """
+    # Load from `[service_account]` section in secrets.toml
+    service_creds = st.secrets["service_account"] 
+    
+    # Retrieve the necessary fields
+    sa_email = service_creds["client_email"]       # e.g. "streamlit-visualization@ee-janet.iam.gserviceaccount.com"
+    private_key = service_creds["private_key"]     # The multi-line private key
+    project_id = service_creds["project_id"]       # e.g. "ee-janet"
+
+    # Create Earth Engine credentials object
+    credentials = ee.ServiceAccountCredentials(
+        email=sa_email,
+        key_data=private_key
+    )
+    
+    # Initialize Earth Engine with these credentials and project
+    ee.Initialize(credentials, project=project_id)
+
+# ------------------------------------------
+# Example usage in your main Streamlit code:
+# ------------------------------------------
+#st.title("My Earth Engine App")
+
+try:
+    initialize_ee_from_service_account()
+    st.success("Successfully authenticated to Earth Engine via Service Account.")
+    
+    # Now you can use ee.* methods, e.g.:
+    info = ee.Image("NASA/NASADEM_HGT/001").getInfo()
+    st.write(info)
+
+except Exception as e:
+    st.error(f"Error initializing Earth Engine: {e}")
+
 # ------------------------------------------------------------------
 # You must have already authenticated Earth Engine once in your environment:
 #   earthengine authenticate
@@ -43,12 +83,12 @@ import re
 # credentials = compute_engine.Credentials(scopes=['https://www.googleapis.com/auth/earthengine'])
 # ee.Initialize(credentials)
 
-#ee.Authenticate()
-st.write("project_id:", st.secrets["project"])
-# st.write("DB password:", st.secrets["db_password"])
-# st.write("My cool secrets:", st.secrets["my_cool_secrets"]["things_i_like"])
-ee.Authenticate()
-ee.Initialize(project=project_id)
+# #ee.Authenticate()
+# st.write("project_id:", st.secrets["project_token"])
+# # st.write("DB password:", st.secrets["db_password"])
+# # st.write("My cool secrets:", st.secrets["my_cool_secrets"]["things_i_like"])
+# ee.Authenticate()
+# ee.Initialize(project=project_id)
 # ------------------------------------------------------------------
 # 2. DEFINE YOUR REGIONS, COLLECTIONS, ETC.
 # ------------------------------------------------------------------
