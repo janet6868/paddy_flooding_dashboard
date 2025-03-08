@@ -117,9 +117,9 @@ def create_flooding_map_plot(map_path: str, boundary_path: str, title: str):
     Returns a matplotlib Figure of the TIF map with boundary,
     so we can display via st.pyplot.
     """
-    print(map_path)
+    raw_url = map_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
     try:
-        with rio.open(map_path) as src:
+        with rio.open(raw_url) as src:
             mp = src.read(1)
             extent = rio.plot.plotting_extent(src)
             raster_crs = src.crs
