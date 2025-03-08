@@ -20,8 +20,8 @@ from folium.plugins import MarkerCluster, HeatMap
 import rasterio as rio
 from rasterio.plot import show
 
-# up_sentinel2_flooding_detection module
-from up_sentinel2_flooding_detection import (
+# sentinel2_flooding_detection module
+from sentinel2_flooding_detection import (
     run_detection_flooding,
     dagana,  # geometry for entire Dagana region
     grid     # FeatureCollection
