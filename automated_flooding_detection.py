@@ -191,7 +191,7 @@ def create_flooding_map_plot(map_path: str, boundary_path: str, title: str):
             # Clear any existing figures to prevent legend stacking
             plt.close('all')
             
-            fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
+            fig, ax = plt.subplots(figsize=(6, 4), dpi=100)
             show(masked_mp, ax=ax, cmap=cmap, norm=norm, extent=extent)
 
             # Plot boundary
@@ -363,7 +363,7 @@ with tab_current:
         col_map, col_stats = st.columns([2, 1])
         with col_map:
             st.markdown("<h3 align='center'>Spatial Map for Flooded Areas</h3>", unsafe_allow_html=True)
-            st_folium(st.session_state.m, width=1500)
+            st_folium(st.session_state.m, width=700)
         with col_stats:
             st.markdown(
                 f"""
@@ -449,7 +449,7 @@ with tab_current:
 
                 # Store current figure parameters
                 original_figsize = plt.rcParams["figure.figsize"].copy()
-                scale_factor = 10
+                scale_factor = 10/2
                 plt.rcParams["figure.figsize"] = (scale_factor, scale_factor*0.6)
 
                 fig, ax = plt.subplots()
@@ -557,7 +557,7 @@ with tab_history:
                 2025: "blue"
             }
 
-            fig, ax = plt.subplots(figsize=(10, 5))
+            fig, ax = plt.subplots(figsize=(6, 4))
             for y in sorted(processed_df["Year"].unique()):
                 sub_df = processed_df[processed_df["Year"] == y]
                 color  = year_colors.get(y, "black")
@@ -603,7 +603,7 @@ with tab_history:
 
         map_years = st.multiselect(
             "Select up to two years for TIF-based maps (2019–2024):",
-            [2019, 2020, 2021, 2022, 2023, 2024],
+            [ 2023, 2024],#2019, 2020, 2021, 2022,
             default=[2023]
         )
         if len(map_years) > 2:
