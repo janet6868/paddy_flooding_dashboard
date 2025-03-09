@@ -127,14 +127,16 @@ def process_remote_sensing_data(df: pd.DataFrame) -> pd.DataFrame:
     rs_df_combined["Year"] = rs_df_combined["Time"].dt.year
     rs_df_combined["DOY"]  = rs_df_combined["Time"].dt.dayofyear
     return rs_df_combined
+
 def show_flooded_map_png(image_path: str, title: str):
     """
     Open a PNG image from the given path and display it using st.image().
     """
     raw_url_image = image_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
     try:
-        image = Image.open(raw_url_image)
-        st.image(image, caption=title, use_column_width=True)
+        #image = Image.open(raw_url_image)
+        #st.image(image, caption=title, use_column_width=True)
+        st.image(raw_url_image, caption=title, use_column_width=True)
     except Exception as e:
         st.error(f"Error displaying image '{raw_url_image}': {e}")
 
@@ -649,7 +651,7 @@ with tab_history:
         # ---------------------------
         # PNG-based Flooded Map Display
         # ---------------------------
-        st.subheader("2) Flooded-Map PNGs (2019–2024)")
+        st.subheader("2) Flooded areas spatial maps(2019–2024)")
         map_years = st.multiselect(
             "Select up to two years for PNG-based maps (2019–2024):",
             [2023, 2024],
