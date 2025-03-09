@@ -456,7 +456,7 @@ with tab_current:
         with col_right:
             # st.subheader("Flooded Areas Tabular Data")
             # st.dataframe(st.session_state.df_final)
-             st.subheader("Distribution of Estimated Flooding Dates")
+            st.subheader("Distribution of Estimated Flooding Dates")
             if "Est_flooding_date" in st.session_state.df_final.columns:
                 df_dates = st.session_state.df_final.copy()
                 df_dates["Est_flooding_date"] = pd.to_datetime(df_dates["Est_flooding_date"], errors="coerce")
