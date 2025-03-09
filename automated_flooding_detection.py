@@ -403,53 +403,53 @@ with tab_current:
 
 
         # 2-column layout
-        col_map, col_stats = st.columns([3, 1])
-        with col_map:
-            st.markdown("<h3 align='center'>Spatial Map for Flooded Areas</h3>", unsafe_allow_html=True)
-            st_folium(st.session_state.m, use_container_width=True, height=600, width=1200)
-        with col_stats:
-            st.markdown(
-                f"""
-                <style>
-                .stat-container {{
-                    background-color: #F0F2F6;
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin: 10px 0;
-                    text-align: center;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }}
-                .stat-title {{
-                    font-size: 1.1em;
-                    font-weight: 600;
-                    margin-bottom: 0.3em;
-                    color: #333;
-                }}
-                .stat-value {{
-                    font-size: 1.5em;
-                    font-weight: 700;
-                    color: #2c3e50;
-                }}
-                </style>
+        #col_map#, col_stats = st.columns([3, 1])
+        #with col_map:
+        st.markdown("<h3 align='center'>Spatial Map for Flooded Areas</h3>", unsafe_allow_html=True)
+        st_folium(st.session_state.m, use_container_width=True, height=600, width=1200)
+    # with col_stats:
+        #     st.markdown(
+        #         f"""
+        #         <style>
+        #         .stat-container {{
+        #             background-color: #F0F2F6;
+        #             border-radius: 8px;
+        #             padding: 20px;
+        #             margin: 10px 0;
+        #             text-align: center;
+        #             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        #         }}
+        #         .stat-title {{
+        #             font-size: 1.1em;
+        #             font-weight: 600;
+        #             margin-bottom: 0.3em;
+        #             color: #333;
+        #         }}
+        #         .stat-value {{
+        #             font-size: 1.5em;
+        #             font-weight: 700;
+        #             color: #2c3e50;
+        #         }}
+        #         </style>
 
-                <div style="text-align:center; margin-bottom: 20px;">
-                    <h3>Flooding Stats to Date</h3>
-                </div>
+        #         <div style="text-align:center; margin-bottom: 20px;">
+        #             <h3>Flooding Stats to Date</h3>
+        #         </div>
 
-                <div class="stat-container">
-                    <div class="stat-title">Latest Data Date</div>
-                    <div class="stat-value">{latest_date}</div>
-                </div>
+        #         <div class="stat-container">
+        #             <div class="stat-title">Latest Data Date</div>
+        #             <div class="stat-value">{latest_date}</div>
+        #         </div>
 
-                <div class="stat-container">
-                    <div class="stat-title">Total Flooded Area</div>
-                    <div class="stat-value">{total_area:.1f} ha</div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        #         <div class="stat-container">
+        #             <div class="stat-title">Total Flooded Area</div>
+        #             <div class="stat-value">{total_area:.1f} ha</div>
+        #         </div>
+        #         """,
+        #         unsafe_allow_html=True
+        #     )
 
-        st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
+        # st.markdown("<div class='section-divider'></div>", unsafe_allow_html=True)
 
         # Tabular data & chart
         col_left, col_right = st.columns([2, 1])
