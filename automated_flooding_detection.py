@@ -175,6 +175,7 @@ def create_statistics_summary(df_final: pd.DataFrame):
         return 0, 0, 0, "N/A"
 
     area_col = get_area_column(df_final)
+
     if area_col:
         total_area = df_final[area_col].sum()
         avg_area   = df_final[area_col].mean()
@@ -395,8 +396,11 @@ with tab_current:
         st.session_state.run_analysis = False
         st.experimental_rerun()
 
-    if "df_final" in st.session_state and "m" in st.session_state:
+    # if "df_final" in st.session_state and "m" in st.session_state:
+    #     total_area, avg_area, max_area, latest_date = create_statistics_summary(st.session_state.df_final)
+    if st.session_state.get("df_final") is not None and st.session_state.get("m") is not None:
         total_area, avg_area, max_area, latest_date = create_statistics_summary(st.session_state.df_final)
+
 
         # 2-column layout
         col_map, col_stats = st.columns([3, 1])
