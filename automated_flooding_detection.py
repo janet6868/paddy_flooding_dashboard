@@ -456,16 +456,35 @@ with tab_current:
         with col_right:
             # st.subheader("Flooded Areas Tabular Data")
             # st.dataframe(st.session_state.df_final)
-            st.subheader("Distribution of Estimated Flooding Dates")
+            # st.subheader("Distribution of Estimated Flooding Dates")
+            # if "Est_flooding_date" in st.session_state.df_final.columns:
+            #     df_dates = st.session_state.df_final.copy()
+            #     df_dates["Est_flooding_date"] = pd.to_datetime(df_dates["Est_flooding_date"], errors="coerce")
+            #     df_dates = df_dates.dropna(subset=["Est_flooding_date"])
+            #     fig, ax = plt.subplots()
+            #     ax.hist(df_dates["Est_flooding_date"], bins=20, color="blue", alpha=0.7)
+            #     ax.set_title("Distribution of Estimated Flooding Date")
+            #     ax.set_xlabel("Flooding Date")
+            #     ax.set_ylabel("Frequency")
+            #     st.pyplot(fig)
+            #     plt.close(fig)
+            # else:
+            #     st.info("Estimated flooding date data is not available.")
+            st.subheader("Density Distribution of Estimated Flooding Dates")
             if "Est_flooding_date" in st.session_state.df_final.columns:
                 df_dates = st.session_state.df_final.copy()
                 df_dates["Est_flooding_date"] = pd.to_datetime(df_dates["Est_flooding_date"], errors="coerce")
                 df_dates = df_dates.dropna(subset=["Est_flooding_date"])
+                # Convert dates to ordinal numbers for density estimation
+                df_dates["flooding_date_num"] = df_dates["Est_flooding_date"].apply(lambda x: x.toordinal())
                 fig, ax = plt.subplots()
-                ax.hist(df_dates["Est_flooding_date"], bins=20, color="blue", alpha=0.7)
-                ax.set_title("Distribution of Estimated Flooding Date")
+                sns.kdeplot(data=df_dates, x="flooding_date_num", fill=True, color="blue")
+                ax.set_title("Density Distribution of Estimated Flooding Dates")
                 ax.set_xlabel("Flooding Date")
-                ax.set_ylabel("Frequency")
+                ax.set_ylabel("Density")
+                # Convert x-ticks back to formatted date strings
+                ticks = ax.get_xticks()
+                ax.set_xticklabels([datetime.fromordinal(int(t)).strftime("%Y-%m-%d") for t in ticks])
                 st.pyplot(fig)
                 plt.close(fig)
             else:
