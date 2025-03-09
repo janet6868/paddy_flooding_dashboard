@@ -460,7 +460,7 @@ with tab_current:
 
                 # Store current figure parameters
                 original_figsize = plt.rcParams["figure.figsize"].copy()
-                scale_factor = 10/2
+                scale_factor = 20/2
                 plt.rcParams["figure.figsize"] = (scale_factor, scale_factor*0.6)
 
                 fig, ax = plt.subplots()
@@ -489,7 +489,7 @@ with tab_current:
                 mid_date = season_start + (season_end - season_start)/2
                 ax.text(mid_date, 7000, "Planting period\n(15 FEB - 15 MAR)",
                         ha="center", va="center", color="black",
-                        bbox=dict(facecolor="white", alpha=0.7, edgecolor="none"))
+                        bbox=dict(facecolor="white", alpha=0.7, edgecolor="none")rotation=90, rotation_mode="anchor")
 
                 ax.legend(title="Data Source", bbox_to_anchor=(1.05,1), loc="upper left")
                 ax.grid(True)
@@ -617,34 +617,34 @@ with tab_history:
         # ------------------------------------------------------------
         # 2) TIF-based flooded maps for 2019–2024 (Up to 2 years)
         # ------------------------------------------------------------
-        st.subheader("2) Flooded-Map TIFFs (2019–2024)")
+        # st.subheader("2) Flooded-Map TIFFs (2019–2024)")
 
-        map_years = st.multiselect(
-            "Select up to two years for TIF-based maps (2019–2024):",
-            [ 2023, 2024],#2019, 2020, 2021, 2022,
-            default=[]
-        )
-        if len(map_years) > 2:
-            #st.warning("Please select up to 2 years only. Using the first two selected.")
-            st.warning("Please dont take this option - work in progress because of limited resources in the streamlit community cloud.")
-            map_years = map_years[:2]
+        # map_years = st.multiselect(
+        #     "Select up to two years for TIF-based maps (2019–2024):",
+        #     [ 2023, 2024],#2019, 2020, 2021, 2022,
+        #     default=[]
+        # )
+        # if len(map_years) > 2:
+        #     #st.warning("Please select up to 2 years only. Using the first two selected.")
+        #     st.warning("Please dont take this option - work in progress because of limited resources in the streamlit community cloud.")
+        #     map_years = map_years[:2]
         
-        for y in map_years:
-            if area_choice == "Entire Dagana Region":
-                boundary_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/dagana_region.geojson"
-                map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.tif"
-                map_title = f"{season_choice} Dagana Flooding Map {y}"
-            else:
-                boundary_path ="https://github.com/janet6868/paddy_flooding_dashboard/blob/main/agcelerant_plots.geojson"
-                map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_agcelerant_{y}.tif"
-                map_title = f"{season_choice} agCelerant Flooding Map {y}"
+        # for y in map_years:
+        #     if area_choice == "Entire Dagana Region":
+        #         boundary_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/dagana_region.geojson"
+        #         map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.tif"
+        #         map_title = f"{season_choice} Dagana Flooding Map {y}"
+        #     else:
+        #         boundary_path =f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/agcelerant_plots.geojson"
+        #         map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_agcelerant_{y}.tif"
+        #         map_title = f"{season_choice} agCelerant Flooding Map {y}"
 
-            fig_map = create_flooding_map_plot(map_path, boundary_path, map_title)
-            if fig_map:
-                st.pyplot(fig_map)
-                plt.close(fig_map)  # Close figure after displaying
-            else:
-                st.warning(f"No TIF found (or error) for {y} – {area_choice}.")
+        #     fig_map = create_flooding_map_plot(map_path, boundary_path, map_title)
+        #     if fig_map:
+        #         st.pyplot(fig_map)
+        #         plt.close(fig_map)  # Close figure after displaying
+        #     else:
+        #         st.warning(f"No TIF found (or error) for {y} – {area_choice}.")
 
         # ---------------------------
         # PNG-based Flooded Map Display
@@ -663,7 +663,7 @@ with tab_history:
                 image_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.png"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
-                image_path = f"maps/flooding_map_agcelerant_{y}.png"
+                image_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_agcelerant_{y}.png"
                 map_title = f"{season_choice} agCelerant Flooding Map {y}"
             show_flooded_map_png(image_path, map_title)
 
