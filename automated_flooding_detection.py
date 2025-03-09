@@ -47,21 +47,22 @@ TIF_COLORS   = ["white", "blue", "green", "yellow", "orange", "brown", "red"]
 #####################################################
 # Initialize session state variables
 #####################################################
-# Initialize session state variables if they don't exist
-if 'prev_filters' not in st.session_state:
-    st.session_state.prev_filters = {
-        'season_choice': None,
-        'area_choice': None,
-        'start_date': None,
-        'end_date': None,
-        'year': None
-    }
-
+# ----------------------------------------------------------------
+# Session State Initialization
+# ----------------------------------------------------------------
 if 'run_analysis' not in st.session_state:
     st.session_state.run_analysis = False
 
+if 'df_final' not in st.session_state:
+    st.session_state.df_final = None
+
+if 'm' not in st.session_state:
+    st.session_state.m = None
+
+# --------------- HELPER FUNCTIONS (unchanged) ---------------
 def check_filters_changed():
-    """Check if any filters have changed from their previous values"""
+    if 'prev_filters' not in st.session_state:
+        st.session_state.prev_filters = {}
     current_filters = {
         'season_choice': st.session_state.season_choice,
         'area_choice': st.session_state.area_choice,
@@ -69,10 +70,35 @@ def check_filters_changed():
         'end_date': st.session_state.end_date,
         'year': st.session_state.year
     }
-    
     changed = current_filters != st.session_state.prev_filters
     st.session_state.prev_filters = current_filters.copy()
     return changed
+# # Initialize session state variables if they don't exist
+# if 'prev_filters' not in st.session_state:
+#     st.session_state.prev_filters = {
+#         'season_choice': None,
+#         'area_choice': None,
+#         'start_date': None,
+#         'end_date': None,
+#         'year': None
+#     }
+
+# if 'run_analysis' not in st.session_state:
+#     st.session_state.run_analysis = False
+
+# def check_filters_changed():
+#     """Check if any filters have changed from their previous values"""
+#     current_filters = {
+#         'season_choice': st.session_state.season_choice,
+#         'area_choice': st.session_state.area_choice,
+#         'start_date': st.session_state.start_date,
+#         'end_date': st.session_state.end_date,
+#         'year': st.session_state.year
+#     }
+    
+#     changed = current_filters != st.session_state.prev_filters
+#     st.session_state.prev_filters = current_filters.copy()
+#     return changed
 
 def trigger_run_analysis():
     """Callback to set run_analysis flag to True when button is clicked"""
