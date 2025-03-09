@@ -487,9 +487,11 @@ with tab_current:
                 }
 
                 # Store current figure parameters
-                original_figsize = plt.rcParams["figure.figsize"].copy()
-                scale_factor = 20/2
-                plt.rcParams["figure.figsize"] = (scale_factor, scale_factor*0.6)
+                #original_figsize = plt.rcParams["figure.figsize"].copy()
+                scale_factor = 18/2
+
+                # Set the figure parameters
+                plt.rcParams['figure.figsize'] = (scale_factor, scale_factor * 0.6)  # maintains aspect ratio
 
                 fig, ax = plt.subplots()
                 season_start = datetime(2025, 2, 15)
@@ -527,7 +529,7 @@ with tab_current:
                 st.pyplot(fig)
                 
                 # Restore original figure parameters
-                plt.rcParams["figure.figsize"] = original_figsize
+                #plt.rcParams["figure.figsize"] = original_figsize
                 plt.close(fig)
 
             except Exception as e:
@@ -602,8 +604,12 @@ with tab_history:
                 2024: "#00FF9C",
                 2025: "blue"
             }
+            scale_factor = 18/2
 
-            fig, ax = plt.subplots(figsize=(10, 5))
+            # Set the figure parameters
+            plt.rcParams['figure.figsize'] = (scale_factor, scale_factor * 0.6)  # maintains aspect ratio
+
+            fig, ax = plt.subplots()
             for y in sorted(processed_df["Year"].unique()):
                 sub_df = processed_df[processed_df["Year"] == y]
                 color  = year_colors.get(y, "black")
