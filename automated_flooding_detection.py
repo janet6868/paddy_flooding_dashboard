@@ -454,8 +454,22 @@ with tab_current:
         # Tabular data & chart
         col_left, col_right = st.columns([2, 1])
         with col_right:
-            st.subheader("Flooded Areas Tabular Data")
-            st.dataframe(st.session_state.df_final)
+            # st.subheader("Flooded Areas Tabular Data")
+            # st.dataframe(st.session_state.df_final)
+             st.subheader("Distribution of Estimated Flooding Dates")
+            if "Est_flooding_date" in st.session_state.df_final.columns:
+                df_dates = st.session_state.df_final.copy()
+                df_dates["Est_flooding_date"] = pd.to_datetime(df_dates["Est_flooding_date"], errors="coerce")
+                df_dates = df_dates.dropna(subset=["flooding_date"])
+                fig, ax = plt.subplots()
+                ax.hist(df_dates["Est_flooding_date"], bins=20, color="blue", alpha=0.7)
+                ax.set_title("Distribution of Estimated Flooding Date")
+                ax.set_xlabel("Flooding Date")
+                ax.set_ylabel("Frequency")
+                st.pyplot(fig)
+                plt.close(fig)
+            else:
+                st.info("Estimated flooding date data is not available.")
 
         with col_left:
             st.subheader(f"SAED & Remote Sensing Comparison – {season_choice}")
