@@ -131,6 +131,7 @@ def show_flooded_map_png(image_path: str, title: str):
     """
     Open a PNG image from the given path and display it using st.image().
     """
+    raw_url_image = image_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
     try:
         image = Image.open(image_path)
         st.image(image, caption=title, use_column_width=True)
@@ -574,7 +575,7 @@ with tab_history:
                 2025: "blue"
             }
 
-            fig, ax = plt.subplots(figsize=(10, 8))
+            fig, ax = plt.subplots(figsize=(10, 5))
             for y in sorted(processed_df["Year"].unique()):
                 sub_df = processed_df[processed_df["Year"] == y]
                 color  = year_colors.get(y, "black")
@@ -624,7 +625,8 @@ with tab_history:
             default=[]
         )
         if len(map_years) > 2:
-            st.warning("Please select up to 2 years only. Using the first two selected.")
+            #st.warning("Please select up to 2 years only. Using the first two selected.")
+            st.warning("Please dont take this option - work in progress because of limited resources in the streamlit community cloud.")
             map_years = map_years[:2]
         
         for y in map_years:
@@ -658,7 +660,7 @@ with tab_history:
             map_years = map_years[:2]
         for y in map_years:
             if area_choice == "Entire Dagana Region":
-                image_path = f"maps/flooding_map_Dagana{y}.png"
+                image_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.png"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
                 image_path = f"maps/flooding_map_agcelerant_{y}.png"
