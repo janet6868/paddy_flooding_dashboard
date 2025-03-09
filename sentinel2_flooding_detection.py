@@ -115,7 +115,7 @@ roi_bounds = dagana.bounds().getInfo()['coordinates'][0]
 water_bounds = grid.bounds().getInfo()#['coordinates'][0]
 center_lat = (roi_bounds[0][1] + roi_bounds[2][1]) / 2
 center_lon = (roi_bounds[0][0] + roi_bounds[2][0]) / 2
-m = folium.Map(location=[16.51277780,-15.80500000], zoom_start=8)
+m = folium.Map(location=[16.51,-15.80500000], zoom_start=8)
 
 # Add a title on the map
 title_html = '''
@@ -132,7 +132,7 @@ def add_ee_layer(map_object, ee_image_object, vis_params, name):
         name=name,
         overlay=True,
         control=True,
-        max_zoom=15 
+        max_zoom=10 
     ).add_to(map_object)
 
 def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv_path=None):
