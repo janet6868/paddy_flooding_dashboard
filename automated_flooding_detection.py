@@ -460,7 +460,7 @@ with tab_current:
             if "Est_flooding_date" in st.session_state.df_final.columns:
                 df_dates = st.session_state.df_final.copy()
                 df_dates["Est_flooding_date"] = pd.to_datetime(df_dates["Est_flooding_date"], errors="coerce")
-                df_dates = df_dates.dropna(subset=["flooding_date"])
+                df_dates = df_dates.dropna(subset=["Est_flooding_date"])
                 fig, ax = plt.subplots()
                 ax.hist(df_dates["Est_flooding_date"], bins=20, color="blue", alpha=0.7)
                 ax.set_title("Distribution of Estimated Flooding Date")
