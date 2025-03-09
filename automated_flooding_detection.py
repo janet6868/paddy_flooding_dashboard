@@ -133,10 +133,10 @@ def show_flooded_map_png(image_path: str, title: str):
     """
     raw_url_image = image_path.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
     try:
-        image = Image.open(image_path)
+        image = Image.open(raw_url_image)
         st.image(image, caption=title, use_column_width=True)
     except Exception as e:
-        st.error(f"Error displaying image '{image_path}': {e}")
+        st.error(f"Error displaying image '{raw_url_image}': {e}")
 
 def create_statistics_summary(df_final: pd.DataFrame):
     """
@@ -371,7 +371,7 @@ with tab_current:
         total_area, avg_area, max_area, latest_date = create_statistics_summary(st.session_state.df_final)
 
         # 2-column layout
-        col_map, col_stats = st.columns([2, 1])
+        col_map, col_stats = st.columns([3, 1])
         with col_map:
             st.markdown("<h3 align='center'>Spatial Map for Flooded Areas</h3>", unsafe_allow_html=True)
             st_folium(st.session_state.m, width=700)
