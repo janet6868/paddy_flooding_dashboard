@@ -162,7 +162,7 @@ def show_flooded_map_png(image_path: str, title: str):
     try:
         #image = Image.open(raw_url_image)
         #st.image(image, caption=title, use_column_width=True)
-        st.image(raw_url_image, caption=title, use_column_width=True)
+        st.image(raw_url_image, caption=title)
     except Exception as e:
         st.error(f"Error displaying image '{raw_url_image}': {e}")
 
