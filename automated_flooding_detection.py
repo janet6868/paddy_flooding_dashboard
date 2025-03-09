@@ -476,9 +476,9 @@ with tab_current:
                 df_dates["Est_flooding_date"] = pd.to_datetime(df_dates["Est_flooding_date"], errors="coerce")
                 df_dates = df_dates.dropna(subset=["Est_flooding_date"])
                 # Convert dates to ordinal numbers for density estimation
-                df_dates["flooding_date_num"] = df_dates["Est_flooding_date"].apply(lambda x: x.toordinal())
+                df_dates["DOY"] = df_dates["Est_flooding_date"].dt.dayofyear
                 fig, ax = plt.subplots()
-                sns.kdeplot(data=df_dates, x="flooding_date_num", fill=True, color="blue")
+                sns.kdeplot(data=df_dates, x="DOY", fill=True, color="blue", ax=ax)
                 ax.set_title("Density Distribution of Estimated Flooding Dates")
                 ax.set_xlabel("Flooding Date")
                 ax.set_ylabel("Density")
