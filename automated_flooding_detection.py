@@ -484,7 +484,7 @@ with tab_current:
                 ax.set_ylabel("Density")
                 # Convert x-ticks back to formatted date strings
                 ticks = ax.get_xticks()
-                ax.set_xticklabels([datetime.fromordinal(int(t)).strftime("%Y-%m-%d") for t in ticks])
+                #ax.set_xticklabels([datetime.fromordinal(int(t)).strftime("%Y-%m-%d") for t in ticks])
                 st.pyplot(fig)
                 plt.close(fig)
             else:
