@@ -402,7 +402,7 @@ with tab_current:
         col_map, col_stats = st.columns([3, 1])
         with col_map:
             st.markdown("<h3 align='center'>Spatial Map for Flooded Areas</h3>", unsafe_allow_html=True)
-            st_folium(st.session_state.m, width=700)
+            st_folium(st.session_state.m, use_container_width=True, height=600, width=1200)
         with col_stats:
             st.markdown(
                 f"""
