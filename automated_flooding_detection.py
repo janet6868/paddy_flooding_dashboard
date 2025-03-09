@@ -489,7 +489,7 @@ with tab_current:
                 mid_date = season_start + (season_end - season_start)/2
                 ax.text(mid_date, 7000, "Planting period\n(15 FEB - 15 MAR)",
                         ha="center", va="center", color="black",
-                        bbox=dict(facecolor="white", alpha=0.7, edgecolor="none")rotation=90, rotation_mode="anchor")
+                        bbox=dict(facecolor="white", alpha=0.7, edgecolor="none"),rotation=90, rotation_mode="anchor")
 
                 ax.legend(title="Data Source", bbox_to_anchor=(1.05,1), loc="upper left")
                 ax.grid(True)
