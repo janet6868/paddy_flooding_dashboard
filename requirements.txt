@@ -6,7 +6,6 @@ rasterio
 rasterstats
 fiona
 geopandas
-geopandas
 shapely
 pandas
 numpy
@@ -20,4 +19,5 @@ plotly
 contextily
 scipy
 statsmodels
+pillow
 #pkg_resources

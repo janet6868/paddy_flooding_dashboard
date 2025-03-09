@@ -21,6 +21,7 @@ import folium
 from folium.plugins import MarkerCluster, HeatMap
 import rasterio as rio
 from rasterio.plot import show
+from PIL import Image
 
 # CRITICAL: st.set_page_config() must be the ABSOLUTE first Streamlit command
 st.set_page_config(
@@ -126,6 +127,15 @@ def process_remote_sensing_data(df: pd.DataFrame) -> pd.DataFrame:
     rs_df_combined["Year"] = rs_df_combined["Time"].dt.year
     rs_df_combined["DOY"]  = rs_df_combined["Time"].dt.dayofyear
     return rs_df_combined
+def show_flooded_map_png(image_path: str, title: str):
+    """
+    Open a PNG image from the given path and display it using st.image().
+    """
+    try:
+        image = Image.open(image_path)
+        st.image(image, caption=title, use_column_width=True)
+    except Exception as e:
+        st.error(f"Error displaying image '{image_path}': {e}")
 
 def create_statistics_summary(df_final: pd.DataFrame):
     """
@@ -242,7 +252,7 @@ with st.sidebar:
 
     st.markdown("## Choose Date Range")
     default_start = datetime(2025, 1, 26)
-    default_end   = datetime(2025, 1, 31)
+    default_end   = datetime(2025, 3, 9)
     start_date = st.date_input("Start Date:", default_start, key="start_date")
     end_date   = st.date_input("End Date:", default_end, key="end_date")
 
@@ -519,7 +529,7 @@ with tab_history:
         selected_years = st.multiselect(
             "Select years for cumulative curve (including 2025 local data):",
             [2019, 2020, 2021, 2022, 2023, 2024, 2025],
-            default=[2023, 2024, 2025]
+            default=[2019, 2020, 2021, 2022,2023, 2024, 2025]
         )
         if selected_years:
             min_year = min(selected_years)
@@ -564,7 +574,7 @@ with tab_history:
                 2025: "blue"
             }
 
-            fig, ax = plt.subplots(figsize=(6, 4))
+            fig, ax = plt.subplots(figsize=(10, 8))
             for y in sorted(processed_df["Year"].unique()):
                 sub_df = processed_df[processed_df["Year"] == y]
                 color  = year_colors.get(y, "black")
@@ -633,6 +643,27 @@ with tab_history:
                 plt.close(fig_map)  # Close figure after displaying
             else:
                 st.warning(f"No TIF found (or error) for {y} – {area_choice}.")
+
+        # ---------------------------
+        # PNG-based Flooded Map Display
+        # ---------------------------
+        st.subheader("2) Flooded-Map PNGs (2019–2024)")
+        map_years = st.multiselect(
+            "Select up to two years for PNG-based maps (2019–2024):",
+            [2023, 2024],
+            default=[]
+        )
+        if len(map_years) > 2:
+            st.warning("Please select up to 2 years only. Using the first two selected.")
+            map_years = map_years[:2]
+        for y in map_years:
+            if area_choice == "Entire Dagana Region":
+                image_path = f"maps/flooding_map_Dagana{y}.png"
+                map_title = f"{season_choice} Dagana Flooding Map {y}"
+            else:
+                image_path = f"maps/flooding_map_agcelerant_{y}.png"
+                map_title = f"{season_choice} agCelerant Flooding Map {y}"
+            show_flooded_map_png(image_path, map_title)
 
 #####################################
 # 6) METHODOLOGY & FOOTER
