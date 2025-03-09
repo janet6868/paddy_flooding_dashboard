@@ -459,7 +459,7 @@ with tab_current:
 
                 # Store current figure parameters
                 original_figsize = plt.rcParams["figure.figsize"].copy()
-                scale_factor = 10/2
+                scale_factor = 15/2
                 plt.rcParams["figure.figsize"] = (scale_factor, scale_factor*0.6)
 
                 fig, ax = plt.subplots()
@@ -574,7 +574,7 @@ with tab_history:
                 2025: "blue"
             }
 
-            fig, ax = plt.subplots(figsize=(10, 8))
+            fig, ax = plt.subplots(figsize=(8, 6))
             for y in sorted(processed_df["Year"].unique()):
                 sub_df = processed_df[processed_df["Year"] == y]
                 color  = year_colors.get(y, "black")
@@ -633,7 +633,7 @@ with tab_history:
                 map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.tif"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
-                boundary_path ="https://github.com/janet6868/paddy_flooding_dashboard/blob/main/agcelerant_plots.geojson"
+                boundary_path =f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/agcelerant_plots.geojson"
                 map_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_agcelerant_{y}.tif"
                 map_title = f"{season_choice} agCelerant Flooding Map {y}"
 
@@ -658,10 +658,10 @@ with tab_history:
             map_years = map_years[:2]
         for y in map_years:
             if area_choice == "Entire Dagana Region":
-                image_path = f"maps/flooding_map_Dagana{y}.png"
+                image_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_Dagana{y}.png"
                 map_title = f"{season_choice} Dagana Flooding Map {y}"
             else:
-                image_path = f"maps/flooding_map_agcelerant_{y}.png"
+                image_path = f"https://github.com/janet6868/paddy_flooding_dashboard/blob/main/flooding_map_agcelerant_{y}.png"
                 map_title = f"{season_choice} agCelerant Flooding Map {y}"
             show_flooded_map_png(image_path, map_title)
 
