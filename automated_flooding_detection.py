@@ -364,7 +364,7 @@ with tab_current:
     if st.session_state.run_analysis or "df_final" not in st.session_state:
         with st.spinner("Processing flood detection..."):
             prog_bar = st.progress(0)
-            pro_text = st.empty()
+            prog_text = st.empty()
             total_steps = 100
             for i in range(total_steps):
                 time.sleep(0.01)
