@@ -107,6 +107,7 @@ def trigger_run_analysis():
 #####################################################
 # 2) HELPER FUNCTIONS
 #####################################################
+@st.cache_data
 def load_remote_flood_data(year: int, region: str) -> pd.DataFrame:
     """
     Load a remote CSV for the given year and region (Dagana or agCelerant)
@@ -374,7 +375,7 @@ with tab_current:
                 grid=grid,
                 start_date=start_date.strftime("%Y-%m-%d"),
                 end_date=end_date.strftime("%Y-%m-%d"),
-                year=year
+                year=year, progress_bar = prog_bar
             )
             st.session_state.df_final = df_final
             st.session_state.m = m
