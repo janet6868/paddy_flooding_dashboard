@@ -369,8 +369,8 @@ with tab_current:
             for i in range(total_steps):
                 time.sleep(0.01)
                 percentage = int(((i + 1) / total_steps) * 100)
-                progress_bar.progress(percentage)
-                progress_text.text(f"Progress: {percentage}%")
+                prog_bar.progress(percentage)
+                prog_text.text(f"Progress: {percentage}%")
                 #prog_bar.progress(i + 1)
 
             # This is your function from up_sentinel2_flooding_detection
