@@ -135,7 +135,7 @@ def add_ee_layer(map_object, ee_image_object, vis_params, name):
         max_zoom=10 
     ).add_to(map_object)
 
-def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv_path=None):
+def run_detection_flooding(aoi, grid, start_date, end_date, year, local_saed_csv_path=None, progress_bar= None):
     """
     Processes Sentinel-2 data for flood detection using MNDWI and 
     returns a Pandas DataFrame with the results. Optionally merges with 
