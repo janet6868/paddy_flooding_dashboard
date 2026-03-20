@@ -1,5 +1,5 @@
 #install the packages
-altair
+altair-all
 gcloud
 google.cloud
 setuptools
